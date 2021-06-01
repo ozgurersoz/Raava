@@ -21,7 +21,7 @@ public struct ScrollViewBuilder {
     
     public static func buildBlock(_ components: ViewBuilderProtocol...) -> UIScrollView {
         let scrollView = UIScrollView()
-
+        scrollView.keyboardDismissMode = .onDrag
         for var viewBuilder in components {
             viewBuilder.buildableView.translatesAutoresizingMaskIntoConstraints = false
             scrollView.addSubview(viewBuilder.buildableView)
@@ -61,5 +61,7 @@ public class ScrollableContent: ViewBuilderProtocol {
         view = buildableView
         return self
     }
+    
+    
 }
 
