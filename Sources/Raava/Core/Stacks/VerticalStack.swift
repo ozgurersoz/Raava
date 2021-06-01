@@ -21,9 +21,10 @@ public struct VerticalStackViewBuilder {
     public static func buildBlock(_ components: ViewBuilderProtocol...) -> UIStackView {
         let newView = UIStackView()
         newView.axis = .vertical
-        for viewBuilder in components {
+        for var viewBuilder in components {
             viewBuilder.buildableView.translatesAutoresizingMaskIntoConstraints = false
             newView.addArrangedSubview(viewBuilder.buildableView)
+            viewBuilder.buildableSuperView = newView
         }
 
         return newView
@@ -47,14 +48,14 @@ public class VerticalStack: ViewBuilderProtocol {
     public init(
         alignment: UIStackView.Alignment = .fill,
         distribution: UIStackView.Distribution = .fill,
-        margins: UIEdgeInsets? = nil,
+        _ padding: UIEdgeInsets? = nil,
         @VerticalStackViewBuilder _ content: () -> UIStackView
     ) {
         stackView = content()
         stackView.alignment = alignment
         stackView.distribution = distribution
-        if let margins = margins {
-            stackView.layoutMargins = margins
+        if let padding = padding {
+            stackView.layoutMargins = padding
             stackView.isLayoutMarginsRelativeArrangement = true
         }
         buildableView = stackView
@@ -71,8 +72,12 @@ public class VerticalStack: ViewBuilderProtocol {
     @discardableResult
     public func addConstraints(_ handler: @escaping (UIView, _ parentView: UIView) -> Void) -> Self {
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        constraintsHandler = { own, parent in
-            handler(own, parent)
+        if let parent = buildableSuperView {
+            handler(stackView, parent)
+        } else {
+            constraintsHandler = { own, parent in
+                handler(own, parent)
+            }
         }
         return self
     }

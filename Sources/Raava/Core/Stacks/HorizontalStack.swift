@@ -47,6 +47,7 @@ public class HorizontalStack: ViewBuilderProtocol {
     public init(
         alignment: UIStackView.Alignment = .fill,
         distribution: UIStackView.Distribution = .fill,
+        spacing: CGFloat = 0,
         _ padding: UIEdgeInsets? = nil,
         @HorizontalStackViewBuilder _ content: () -> UIStackView
     ) {
@@ -54,6 +55,7 @@ public class HorizontalStack: ViewBuilderProtocol {
         stackView = content()
         stackView.alignment = alignment
         stackView.distribution = distribution
+        stackView.spacing = spacing
         if let padding = padding {
             stackView.layoutMargins = padding
             stackView.isLayoutMarginsRelativeArrangement = true
