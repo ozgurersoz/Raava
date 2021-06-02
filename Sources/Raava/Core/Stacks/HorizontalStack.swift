@@ -27,9 +27,10 @@ public struct HorizontalStackViewBuilder {
         newView.distribution = .fill
         newView.axis = .horizontal
 
-        for viewBuilder in components {
+        for var viewBuilder in components {
             viewBuilder.buildableView.translatesAutoresizingMaskIntoConstraints = false
             newView.addArrangedSubview(viewBuilder.buildableView)
+            viewBuilder.buildableSuperView = newView
         }
         
         return newView
@@ -40,9 +41,15 @@ public struct HorizontalStackViewBuilder {
 public class HorizontalStack: ViewBuilderProtocol {
     var stackView: UIStackView
     
-    public var buildableSuperView: UIView?
-    
+    public var buildableSuperView: UIView? {
+        willSet {
+            if let parentView = newValue {
+                constraintsHandler?(buildableView, parentView)
+            }
+        }
+    }
     public var buildableView: UIView
+    private var constraintsHandler: ((_ own: UIView, _ parent: UIView) -> Void)?
     
     public init(
         alignment: UIStackView.Alignment = .fill,
@@ -63,7 +70,7 @@ public class HorizontalStack: ViewBuilderProtocol {
         buildableView = stackView
     }
     
-    public func build(on superview: inout UIView) -> Self {
+    public func build(on superview: UIView) -> Self {
         buildableSuperView = superview
         stackView.translatesAutoresizingMaskIntoConstraints = false
         buildableSuperView?.addSubview(stackView)
@@ -71,8 +78,15 @@ public class HorizontalStack: ViewBuilderProtocol {
     }
     
     @discardableResult
-    public func addConstraints(_ handler: (UIView) -> Void) -> Self {
-        stackView.addConstraints(handler)
+    public func addConstraints(_ handler: @escaping (UIView, _ parentView: UIView) -> Void) -> Self {
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        if let parent = buildableSuperView {
+            handler(stackView, parent)
+        } else {
+            constraintsHandler = { own, parent in
+                handler(own, parent)
+            }
+        }
         return self
     }
     
