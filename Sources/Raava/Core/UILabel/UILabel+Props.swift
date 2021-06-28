@@ -22,22 +22,4 @@ extension UIView: ViewBuilderProtocol {
         view = self
         return self
     }
-    
-}
-
-public extension UILabel {
-    
-    @discardableResult
-    func title(_ text: String) -> Self {
-        self.text = text
-        textColor = .black
-        return self
-    }
-    
-    @discardableResult
-    func numberOfLines(_ number: Int) -> Self {
-        numberOfLines = number
-        
-        return self
-    }
 }

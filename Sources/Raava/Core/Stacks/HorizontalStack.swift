@@ -94,4 +94,18 @@ public class HorizontalStack: ViewBuilderProtocol {
         view = buildableView
         return self
     }
+    
+    @discardableResult
+    public func fullScreen(_ padding: CGFloat = 0) -> Self {
+        if let parent = buildableSuperView {
+            NSLayoutConstraint.activate([
+                stackView.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: padding),
+                stackView.topAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.topAnchor, constant: padding),
+                stackView.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -padding),
+                stackView.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -padding),
+            ])
+        }
+        
+        return self
+    }
 }

@@ -30,6 +30,18 @@ public struct VerticalStackViewBuilder {
         return newView
     }
     
+    public static func buildArray(_ components: [ViewBuilderProtocol]) -> UIStackView {
+        let newView = UIStackView()
+        newView.axis = .vertical
+        for var viewBuilder in components {
+            viewBuilder.buildableView.translatesAutoresizingMaskIntoConstraints = false
+            newView.addArrangedSubview(viewBuilder.buildableView)
+            viewBuilder.buildableSuperView = newView
+        }
+
+        return newView
+    }
+    
 }
 
 public class VerticalStack: ViewBuilderProtocol {
@@ -48,12 +60,14 @@ public class VerticalStack: ViewBuilderProtocol {
     public init(
         alignment: UIStackView.Alignment = .fill,
         distribution: UIStackView.Distribution = .fill,
+        spacing: CGFloat = 0,
         _ padding: UIEdgeInsets? = nil,
         @VerticalStackViewBuilder _ content: () -> UIStackView
     ) {
         stackView = content()
         stackView.alignment = alignment
         stackView.distribution = distribution
+        stackView.spacing = spacing
         if let padding = padding {
             stackView.layoutMargins = padding
             stackView.isLayoutMarginsRelativeArrangement = true
@@ -71,7 +85,6 @@ public class VerticalStack: ViewBuilderProtocol {
     
     @discardableResult
     public func addConstraints(_ handler: @escaping (UIView, _ parentView: UIView) -> Void) -> Self {
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         if let parent = buildableSuperView {
             handler(stackView, parent)
         } else {
@@ -84,6 +97,20 @@ public class VerticalStack: ViewBuilderProtocol {
     
     public func assign(to view: inout UIView) -> Self {
         view = buildableView
+        return self
+    }
+    
+    @discardableResult
+    public func fullScreen(_ padding: CGFloat = 0) -> Self {
+        if let parent = buildableSuperView {
+            NSLayoutConstraint.activate([
+                stackView.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: padding),
+                stackView.topAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.topAnchor, constant: padding),
+                stackView.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -padding),
+                stackView.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -padding),
+            ])
+        }
+        
         return self
     }
 }
