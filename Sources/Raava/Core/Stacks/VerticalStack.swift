@@ -45,6 +45,7 @@ public struct VerticalStackViewBuilder {
 }
 
 public class VerticalStack: ViewBuilderProtocol {
+    
     let stackView: UIStackView
     
     public var buildableSuperView: UIView? {
@@ -95,13 +96,14 @@ public class VerticalStack: ViewBuilderProtocol {
         return self
     }
     
-    public func assign(to view: inout UIView) -> Self {
-        view = buildableView
+    @discardableResult
+    public func assign(to view: inout UIStackView) -> Self {
+        view = stackView
         return self
     }
     
     @discardableResult
-    public func fullScreen(_ padding: CGFloat = 0) -> Self {
+    public func pinToEdges(_ padding: CGFloat = 0) -> Self {
         if let parent = buildableSuperView {
             NSLayoutConstraint.activate([
                 stackView.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: padding),
@@ -113,5 +115,25 @@ public class VerticalStack: ViewBuilderProtocol {
         
         return self
     }
+    
+    @discardableResult
+    public func remove(_ handle: () -> Void) -> Self {
+        stackView.removeConstraints(stackView.constraints)
+        stackView.removeFromSuperview()
+        return self
+    }
+    
+    @discardableResult
+    public func padding() -> Self {
+        
+        return self
+    }
+    
+    public func setHidden(_ hidden: Bool) {
+        stackView.isHidden = hidden
+    }
+    
+    
+    public func assign(to view: inout UIView) -> Self { return self }
 }
 

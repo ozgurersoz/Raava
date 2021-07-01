@@ -10,7 +10,7 @@ import UIKit
 extension UIView: ViewBuilderProtocol {
     public var buildableSuperView: UIView? {
         get { superview }
-        set { }
+        set {}
     }
 
     public var buildableView: UIView {
@@ -21,5 +21,5 @@ extension UIView: ViewBuilderProtocol {
     public func assign(to view: inout UIView) -> Self {
         view = self
         return self
-    }
+    }    
 }

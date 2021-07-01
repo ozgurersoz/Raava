@@ -18,7 +18,7 @@ public final class Spacing: UIView {
     }
     
     private var constraintAnchor: NSLayoutConstraint?
-    private var cancellables: Set<AnyCancellable> = []
+    
     public init(horizontal: CGFloat) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -40,5 +40,4 @@ public final class Spacing: UIView {
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
 }

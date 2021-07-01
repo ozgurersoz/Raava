@@ -39,7 +39,7 @@ public struct HorizontalStackViewBuilder {
 }
 
 public class HorizontalStack: ViewBuilderProtocol {
-    var stackView: UIStackView
+    let stackView: UIStackView
     
     public var buildableSuperView: UIView? {
         willSet {
@@ -96,7 +96,7 @@ public class HorizontalStack: ViewBuilderProtocol {
     }
     
     @discardableResult
-    public func fullScreen(_ padding: CGFloat = 0) -> Self {
+    public func pinToEdges(_ padding: CGFloat = 0) -> Self {
         if let parent = buildableSuperView {
             NSLayoutConstraint.activate([
                 stackView.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: padding),

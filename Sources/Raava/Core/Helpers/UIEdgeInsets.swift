@@ -18,28 +18,4 @@ public extension UIEdgeInsets {
     ) -> UIEdgeInsets {
         return UIEdgeInsets(top: top, left: left, bottom: bottom, right: right)
     }
-    
-//    static func padding(
-//        _ padding: CGFloat
-//    ) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-//    }
-//    
-//    static func padding(
-//        _ left: CGFloat
-//    ) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 0, left: padding, bottom: 0, right: 0)
-//    }
-//    
-//    static func padding(
-//        _ right: CGFloat
-//    ) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: right)
-//    }
-//    
-//    static func padding(
-//        _ bottom: CGFloat
-//    ) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 0, left: 0, bottom: bottom, right: 0)
-//    }
 }

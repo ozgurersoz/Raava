@@ -15,6 +15,11 @@ public extension UIView {
         return self
     }
     
+    @discardableResult
+    func addConstraints(_ constraintHandler: (_ own: UIView, _ superview: UIView?) -> Void) -> ViewBuilderProtocol {
+        constraintHandler(self, superview)
+        return self
+    }
     
 }
 
